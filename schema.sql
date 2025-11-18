@@ -1,9 +1,10 @@
-
-DROP DATABASE IF EXISTS military_database;
 CREATE DATABASE military_database CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE military_database;
 
--- Foreign-Key-Checks vorübergehend deaktivieren (zum sicheren Droppen)
+CREATE USER 'marian'@'%' IDENTIFIED BY 'deinPasswort123';
+
+GRANT ALL PRIVILEGES ON military_database.* TO 'marian'@'%';
+
+FLUSH PRIVILEGES;
 SET FOREIGN_KEY_CHECKS = 0;
 
 
