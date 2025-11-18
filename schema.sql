@@ -5,6 +5,8 @@ CREATE USER 'marian'@'%' IDENTIFIED BY 'deinPasswort123';
 GRANT ALL PRIVILEGES ON military_database.* TO 'marian'@'%';
 
 FLUSH PRIVILEGES;
+
+USE military_database;
 SET FOREIGN_KEY_CHECKS = 0;
 
 
