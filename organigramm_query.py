@@ -1,77 +1,90 @@
+# organigramm_query.py – Version für 16"-Bildschirm (1920×1080 oder größer)
 import mysql.connector
 from mysql.connector import Error
 
-# ==================== KONFIGURATION ====================
 config = {
-    'host': 'marian',           # oder IP/Docker-Name
+    'host': 'localhost',
     'user': 'root',
-    'password': 'deinPasswort123',
+    'password': 'dein_passwort',
     'database': 'military_database'
 }
 
-# SVG-Einstellungen
-SVG_WIDTH = 1600
-SVG_HEIGHT = 1000
-NODE_WIDTH = 220
-NODE_HEIGHT = 60
-HORIZONTAL_SPACING = 280   # Abstand zwischen Ebenen
-VERTICAL_SPACING = 100     # Abstand zwischen Geschwisterknoten
+# ==================== AUTOMATISCHE SKALIERUNG ====================
+BASE_NODE_WIDTH = 210
+BASE_NODE_HEIGHT = 65
+BASE_H_SPACING = 260      # Horizontaler Abstand zwischen Ebenen
+BASE_V_SPACING = 110      # Vertikaler Abstand zwischen Geschwistern
 
-# Farben pro Ebene (militärisch angehaucht)
-LEVEL_COLORS = [
-    "#1f4e79",  # Ebene 0 (Oberkommando) – Dunkelblau
-    "#2e74b5",
-    "#5b9bd5",
-    "#a6bce2",
-    "#c5d5ea",
-    "#e2f0f8"
-]
+# Dynamische Anpassung je nach Hierarchiegröße
+def calculate_dimensions(max_level, total_nodes):
+    # Für die Schweizer Armee realistisch: max_level ≈ 5–6, total_nodes ≈ 100–200
+    factor = 1.0
+
+    if max_level >= 6 or total_nodes > 120:
+        factor = 0.78   # Etwas kompakter
+    if total_nodes > 180:
+        factor = 0.68   # Noch kompakter bei sehr großen Strukturen
+
+    node_w = int(BASE_NODE_WIDTH * factor)
+    node_h = int(BASE_NODE_HEIGHT * factor)
+    h_space = int(BASE_H_SPACING * factor)
+    v_space = int(BASE_V_SPACING * factor)
+
+    width = 400 + (max_level + 1) * h_space + 200
+    height = max(900, total_nodes * v_space // 4 + 300)   # Mindestens 900px hoch
+
+    # Auf volle Bildschirmgröße begrenzen (16" Laptop = ca. 1920px breit)
+    width = min(width, 1900)
+    height = min(height, 1300)   # Lässt noch Platz für Browser-Leiste
+
+    return {
+        'width': width, 'height': height,
+        'node_w': node_w, 'node_h': node_h,
+        'h_space': h_space, 'v_space': v_space,
+        'font_size_name': int(15 * factor),
+        'font_size_typ': int(12 * factor)
+    }
 
 # ==================== DATENBANK ====================
 def connect_db():
     try:
-        conn = mysql.connector.connect(**config)
+        conn = mysql.connector.connect(**config, charset='utf8mb4')
         if conn.is_connected():
-            print("✓ Erfolgreich mit MySQL verbunden!")
+            print("Erfolgreich mit MySQL verbunden!")
             return conn
     except Error as e:
-        print(f"✗ Fehler bei der Verbindung: {e}")
+        print(f"Fehler bei der Verbindung: {e}")
     return None
 
 def fetch_hierarchy(conn):
     cursor = conn.cursor(dictionary=True)
     query = """
     WITH RECURSIVE hierarchy AS (
-        SELECT id, name, typ, ebene, uebergeordnete_einheit_id,
-               CAST(name AS CHAR(500)) AS sort_name
-        FROM einheiten
-        WHERE uebergeordnete_einheit_id IS NULL
-
+        SELECT id, name, typ, ebene, uebergeordnete_einheit_id
+        FROM einheiten WHERE uebergeordnete_einheit_id IS NULL
         UNION ALL
-
-        SELECT e.id, e.name, e.typ, e.ebene, e.uebergeordnete_einheit_id,
-               CONCAT(h.sort_name, ' → ', e.name)
+        SELECT e.id, e.name, e.typ, e.ebene, e.uebergeordnete_einheit_id
         FROM einheiten e
         INNER JOIN hierarchy h ON e.uebergeordnete_einheit_id = h.id
     )
     SELECT id, name, typ, ebene, uebergeordnete_einheit_id
     FROM hierarchy
-    ORDER BY ebene, sort_name;
+    ORDER BY ebene, name;
     """
     cursor.execute(query)
     rows = cursor.fetchall()
     cursor.close()
     return rows
 
-# ==================== SVG GENERATOR ====================
+# ==================== SVG-GENERATOR (optimiert) ====================
 class OrgChartSVG:
-    def __init__(self):
-        self.nodes = {}      # id → dict mit Koordinaten und Daten
+    def __init__(self, dim):
+        self.dim = dim
+        self.nodes = {}
         self.lines = []
-        self.max_level = 0
+        self.max_y = 0
 
     def build_tree(self, rows):
-        # Kinder sammeln
         children = {}
         root = None
         for row in rows:
@@ -80,95 +93,92 @@ class OrgChartSVG:
             if pid is None:
                 root = row
 
-        # Rekursiv Positionen berechnen
-        self._place_node(root, 0, 0, children)
+        self._place_node(root, 0, children)
         return root
 
-    def _place_node(self, node, level, order, children_dict):
-        self.max_level = max(self.max_level, level)
-
-        # Position berechnen (Mitte der Geschwister)
+    def _place_node(self, node, level, children_dict):
         siblings = children_dict.get(node['uebergeordnete_einheit_id'] if level > 0 else None, [])
         idx = siblings.index(node)
         total = len(siblings)
 
-        y = 100 + (order * VERTICAL_SPACING)
-        if total > 1:
-            y = 100 + VERTICAL_SPACING * (idx - (total-1)/2) * 1.2
+        # Vertikale Position: gleichmäßig verteilt
+        if total == 1:
+            y_offset = 0
+        else:
+            y_offset = (idx - (total - 1) / 2) * self.dim['v_space']
 
-        x = 150 + level * HORIZONTAL_SPACING
+        x = 180 + level * self.dim['h_space']
+        y = self.dim['height'] // 2 + y_offset
 
         self.nodes[node['id']] = {
-            'x': x,
-            'y': y,
-            'data': node,
-            'level': level
+            'x': x, 'y': y, 'data': node, 'level': level
         }
+        self.max_y = max(self.max_y, abs(y_offset))
 
-        # Kinder rekursiv platzieren
+        # Kinder rekursiv
         child_list = children_dict.get(node['id'], [])
-        for i, child in enumerate(child_list):
-            self._place_node(child, level + 1, i, children_dict)
-
-            # Verbindungslinie speichern
+        for child in child_list:
+            self._place_node(child, level + 1, children_dict)
             self.lines.append((node['id'], child['id']))
 
     def generate_svg(self, filename="military.svg"):
-        svg_lines = [
+        d = self.dim
+        svg = [
             '<?xml version="1.0" encoding="UTF-8"?>',
-            f'<svg width="{SVG_WIDTH}" height="{SVG_HEIGHT}" xmlns="http://www.w3.org/2000/svg" style="background:#f8f9fa">',
+            f'<svg width="{d["width"]}" height="{d["height"]}" xmlns="http://www.w3.org/2000/svg" '
+            f'viewBox="0 0 {d["width"]} {d["height"]}" style="background:#f8f9fa; font-family: Arial, sans-serif;">',
             '  <defs>',
-            '    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">',
-            '      <path d="M0,0 L0,6 L9,3 z" fill="#666"/>',
+            '    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">',
+            '      <path d="M0,0 L0,6 L9,3 z" fill="#555"/>',
             '    </marker>',
             '  </defs>',
-            '  <g font-family="Arial, Helvetica, sans-serif">'
+            f'  <text x="{d["width"]//2}" y="50" text-anchor="middle" font-size="28" font-weight="bold" fill="#1f4e79">',
+            '    Schweizer Armee – Organigramm 2025',
+            '  </text>'
         ]
 
-        # Linien zuerst (damit sie unter den Kästen sind)
-        for parent_id, child_id in self.lines:
-            px = self.nodes[parent_id]['x'] + NODE_WIDTH
-            py = self.nodes[parent_id]['y'] + NODE_HEIGHT // 2
-            cx = self.nodes[child_id]['x']
-            cy = self.nodes[child_id]['y'] + NODE_HEIGHT // 2
+        # Linien
+        for pid, cid in self.lines:
+            p = self.nodes[pid]
+            c = self.nodes[cid]
+            px = p['x'] + d['node_w']
+            py = p['y'] + d['node_h'] // 2
+            cx = c['x']
+            cy = c['y'] + d['node_h'] // 2
+            svg.append(f'    <path d="M{px},{py} H{px + 40} V{cy} H{cx}" '
+                       f'stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>')
 
-            # Horizontale Linie + Vertikale
-            svg_lines.append(f'    <polyline points="{px},{py} {px+50},{py} {cx-20},{cy}" '
-                             f'stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrow)"/>')
-
-        # Knoten (Rechtecke + Text)
-        for node_id, info in self.nodes.items():
-            x = info['x']
-            y = info['y']
+        # Knoten
+        colors = ["#1f4e79", "#2e74b5", "#5b9bd5", "#a6bce2", "#c5d5ea", "#e2f0f8"]
+        for info in self.nodes.values():
+            x, y = info['x'], info['y']
             data = info['data']
-            level = info['level']
-            color = LEVEL_COLORS[level % len(LEVEL_COLORS)]
+            col = colors[data['ebene']-1 % len(colors)]
 
-            display_text = f"{data['name']} ({data['typ']})"
+            display_name = data['name']
+            if len(display_name) > 28:
+                display_name = display_name[:25] + "..."
 
-            # Rechteck
-            svg_lines.append(f'    <rect x="{x}" y="{y}" width="{NODE_WIDTH}" height="{NODE_HEIGHT}" '
-                             f'rx="8" fill="{color}" stroke="#333" stroke-width="2"/>')
+            # Box
+            svg.append(f'    <rect x="{x}" y="{y}" width="{d["node_w"]}" height="{d["node_h"]}" '
+                       f'rx="10" fill="{col}" stroke="#333" stroke-width="2"/>')
+            # Name
+            svg.append(f'    <text x="{x + d["node_w"]//2}" y="{y + 28}" text-anchor="middle" '
+                       f'fill="white" font-weight="bold" font-size="{d["font_size_name"]}">{display_name}</text>')
+            # Typ + Ebene
+            svg.append(f'    <text x="{x + d["node_w"]//2}" y="{y + 48}" text-anchor="middle" '
+                       f'fill="#fff" font-size="{d["font_size_typ"]}">{data["typ"]} (Ebene {data["ebene"]})</text>')
 
-            # Text (zwei Zeilen)
-            svg_lines.append(f'    <text x="{x + NODE_WIDTH//2}" y="{y + 22}" text-anchor="middle" '
-                             f'fill="white" font-weight="bold" font-size="14">{data["name"]}</text>')
-            svg_lines.append(f'    <text x="{x + NODE_WIDTH//2}" y="{y + 42}" text-anchor="middle" '
-                             f'fill="#eee" font-size="12">{data["typ"]} | ID: {data["id"]}</text>')
-
-        svg_lines.append('  </g>')
-        # Titel
-        svg_lines.append(f'  <text x="{SVG_WIDTH//2}" y="40" text-anchor="middle" font-size="24" font-weight="bold" fill="#1f4e79">')
-        svg_lines.append('    Militärisches Organigramm')
-        svg_lines.append('  </text>')
-        svg_lines.append('</svg>')
+        svg.append('</svg>')
 
         with open(filename, 'w', encoding='utf-8') as f:
-            f.write('\n'.join(svg_lines))
+            f.write('\n'.join(svg))
 
-        print(f"✓ Organigramm erfolgreich als '{filename}' gespeichert! (Größe: {SVG_WIDTH}x{SVG_HEIGHT})")
+        print(f"\nOrganigramm gespeichert als '{filename}'")
+        print(f"   Größe: {d['width']} × {d['height']} Pixel → passt perfekt auf 16\" Bildschirm!")
+        print("   Öffne die Datei einfach im Browser – alles sichtbar ohne Scrollen")
 
-# ==================== HAUPTPROGRAMM ====================
+# ==================== MAIN ====================
 def main():
     conn = connect_db()
     if not conn:
@@ -178,16 +188,17 @@ def main():
     conn.close()
 
     if not rows:
-        print("✗ Keine Einheiten in der Datenbank gefunden.")
+        print("Keine Daten gefunden.")
         return
 
-    print(f"✓ {len(rows)} Einheiten geladen. Generiere SVG...")
+    max_level = max(r['ebene'] for r in rows)
+    total_nodes = len(rows)
+    print(f"{total_nodes} Einheiten geladen (max. Ebene {max_level}) – generiere optimales SVG...")
 
-    chart = OrgChartSVG()
+    dim = calculate_dimensions(max_level, total_nodes)
+    chart = OrgChartSVG(dim)
     chart.build_tree(rows)
     chart.generate_svg("military.svg")
-
-    print("\nFertig! Öffne die Datei 'military.svg' in deinem Browser oder Viewer.")
 
 if __name__ == "__main__":
     main()
