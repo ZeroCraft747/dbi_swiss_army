@@ -4,8 +4,8 @@ from mysql.connector import Error
 
 config = {
     'host': 'localhost',
-    'user': 'marian',
-    'password': 'deinPasswort123',
+    'user': 'root',
+    'password': 'mysql',
     'database': 'military_database'
 }
 
@@ -31,7 +31,7 @@ def calculate_dimensions(max_level, total_nodes):
     v_space = int(BASE_V_SPACING * factor)
 
     width = 400 + (max_level + 1) * h_space + 200
-    height = max(900, total_nodes * v_space // 4 + 300)   # Mindestens 900px hoch
+    height = max(1300, total_nodes * v_space // 4 + 300)   # Mindestens 900px hoch
 
     # Auf volle Bildschirmgröße begrenzen (16" Laptop = ca. 1920px breit)
     width = min(width, 1900)

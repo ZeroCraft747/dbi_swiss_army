@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1900" height="1300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 1300" style="background:#f8f9fa; font-family: Arial, sans-serif;">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#555"/>
+    </marker>
+  </defs>
+  <text x="950" y="50" text-anchor="middle" font-size="28" font-weight="bold" fill="#1f4e79">
+    Schweizer Armee – Organigramm 2025
+  </text>
+    <path d="M390,682 H430 V462.0 H440" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M650,572.0 H690 V242.0 H700" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M910,352.0 H950 V682 H960" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M650,572.0 H690 V352.0 H700" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M910,462.0 H950 V627.0 H960" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M910,462.0 H950 V737.0 H960" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M650,572.0 H690 V462.0 H700" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M910,572.0 H950 V682 H960" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M650,572.0 H690 V572.0 H700" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M910,682.0 H950 V572.0 H960" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M910,682.0 H950 V682.0 H960" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M910,682.0 H950 V792.0 H960" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M650,572.0 H690 V682.0 H700" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M650,572.0 H690 V792.0 H700" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M650,572.0 H690 V902.0 H700" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M650,572.0 H690 V1012.0 H700" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M650,572.0 H690 V1122.0 H700" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M390,682 H430 V572.0 H440" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M390,682 H430 V682.0 H440" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M390,682 H430 V792.0 H440" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <path d="M390,682 H430 V902.0 H440" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <rect x="180" y="650" width="210" height="65" rx="10" fill="#1f4e79" stroke="#333" stroke-width="2"/>
+    <text x="285" y="678" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Schweizer Armee</text>
+    <text x="285" y="698" text-anchor="middle" fill="#fff" font-size="12">Oberkommando (Ebene 1)</text>
+    <rect x="440" y="430.0" width="210" height="65" rx="10" fill="#2e74b5" stroke="#333" stroke-width="2"/>
+    <text x="545" y="458.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Höheres Kommando der Armee</text>
+    <text x="545" y="478.0" text-anchor="middle" fill="#fff" font-size="12">Kommando (Ebene 2)</text>
+    <rect x="440" y="540.0" width="210" height="65" rx="10" fill="#2e74b5" stroke="#333" stroke-width="2"/>
+    <text x="545" y="568.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Kommando Ausbildung</text>
+    <text x="545" y="588.0" text-anchor="middle" fill="#fff" font-size="12">Kommando (Ebene 2)</text>
+    <rect x="700" y="210.0" width="210" height="65" rx="10" fill="#5b9bd5" stroke="#333" stroke-width="2"/>
+    <text x="805" y="238.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Führungsunterstützungsbri...</text>
+    <text x="805" y="258.0" text-anchor="middle" fill="#fff" font-size="12">Brigade (Ebene 3)</text>
+    <rect x="700" y="320.0" width="210" height="65" rx="10" fill="#5b9bd5" stroke="#333" stroke-width="2"/>
+    <text x="805" y="348.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Gebirgsbrigade 12</text>
+    <text x="805" y="368.0" text-anchor="middle" fill="#fff" font-size="12">Brigade (Ebene 3)</text>
+    <rect x="960" y="650" width="210" height="65" rx="10" fill="#a6bce2" stroke="#333" stroke-width="2"/>
+    <text x="1065" y="678" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Gebirgsinfanteriebataillo...</text>
+    <text x="1065" y="698" text-anchor="middle" fill="#fff" font-size="12">Bataillon (Ebene 4)</text>
+    <rect x="700" y="430.0" width="210" height="65" rx="10" fill="#5b9bd5" stroke="#333" stroke-width="2"/>
+    <text x="805" y="458.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Infanteriebrigade 1</text>
+    <text x="805" y="478.0" text-anchor="middle" fill="#fff" font-size="12">Brigade (Ebene 3)</text>
+    <rect x="960" y="595.0" width="210" height="65" rx="10" fill="#a6bce2" stroke="#333" stroke-width="2"/>
+    <text x="1065" y="623.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Artilleriebataillon 10</text>
+    <text x="1065" y="643.0" text-anchor="middle" fill="#fff" font-size="12">Bataillon (Ebene 4)</text>
+    <rect x="960" y="705.0" width="210" height="65" rx="10" fill="#a6bce2" stroke="#333" stroke-width="2"/>
+    <text x="1065" y="733.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Infanteriebataillon 56</text>
+    <text x="1065" y="753.0" text-anchor="middle" fill="#fff" font-size="12">Bataillon (Ebene 4)</text>
+    <rect x="700" y="540.0" width="210" height="65" rx="10" fill="#5b9bd5" stroke="#333" stroke-width="2"/>
+    <text x="805" y="568.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Infanteriebrigade 2</text>
+    <text x="805" y="588.0" text-anchor="middle" fill="#fff" font-size="12">Brigade (Ebene 3)</text>
+    <rect x="960" y="650" width="210" height="65" rx="10" fill="#a6bce2" stroke="#333" stroke-width="2"/>
+    <text x="1065" y="678" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Infanteriebataillon 61</text>
+    <text x="1065" y="698" text-anchor="middle" fill="#fff" font-size="12">Bataillon (Ebene 4)</text>
+    <rect x="700" y="650.0" width="210" height="65" rx="10" fill="#5b9bd5" stroke="#333" stroke-width="2"/>
+    <text x="805" y="678.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Panzerbrigade 11</text>
+    <text x="805" y="698.0" text-anchor="middle" fill="#fff" font-size="12">Brigade (Ebene 3)</text>
+    <rect x="960" y="540.0" width="210" height="65" rx="10" fill="#a6bce2" stroke="#333" stroke-width="2"/>
+    <text x="1065" y="568.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Aufklärungsbataillon 1</text>
+    <text x="1065" y="588.0" text-anchor="middle" fill="#fff" font-size="12">Bataillon (Ebene 4)</text>
+    <rect x="960" y="650.0" width="210" height="65" rx="10" fill="#a6bce2" stroke="#333" stroke-width="2"/>
+    <text x="1065" y="678.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Panzerbataillon 12</text>
+    <text x="1065" y="698.0" text-anchor="middle" fill="#fff" font-size="12">Bataillon (Ebene 4)</text>
+    <rect x="960" y="760.0" width="210" height="65" rx="10" fill="#a6bce2" stroke="#333" stroke-width="2"/>
+    <text x="1065" y="788.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Panzerbataillon 14</text>
+    <text x="1065" y="808.0" text-anchor="middle" fill="#fff" font-size="12">Bataillon (Ebene 4)</text>
+    <rect x="700" y="760.0" width="210" height="65" rx="10" fill="#5b9bd5" stroke="#333" stroke-width="2"/>
+    <text x="805" y="788.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Territorialdivision 1</text>
+    <text x="805" y="808.0" text-anchor="middle" fill="#fff" font-size="12">Division (Ebene 3)</text>
+    <rect x="700" y="870.0" width="210" height="65" rx="10" fill="#5b9bd5" stroke="#333" stroke-width="2"/>
+    <text x="805" y="898.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Territorialdivision 2</text>
+    <text x="805" y="918.0" text-anchor="middle" fill="#fff" font-size="12">Division (Ebene 3)</text>
+    <rect x="700" y="980.0" width="210" height="65" rx="10" fill="#5b9bd5" stroke="#333" stroke-width="2"/>
+    <text x="805" y="1008.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Territorialdivision 3</text>
+    <text x="805" y="1028.0" text-anchor="middle" fill="#fff" font-size="12">Division (Ebene 3)</text>
+    <rect x="700" y="1090.0" width="210" height="65" rx="10" fill="#5b9bd5" stroke="#333" stroke-width="2"/>
+    <text x="805" y="1118.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Territorialdivision 4</text>
+    <text x="805" y="1138.0" text-anchor="middle" fill="#fff" font-size="12">Division (Ebene 3)</text>
+    <rect x="440" y="650.0" width="210" height="65" rx="10" fill="#2e74b5" stroke="#333" stroke-width="2"/>
+    <text x="545" y="678.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Kommando Operationen</text>
+    <text x="545" y="698.0" text-anchor="middle" fill="#fff" font-size="12">Kommando (Ebene 2)</text>
+    <rect x="440" y="760.0" width="210" height="65" rx="10" fill="#2e74b5" stroke="#333" stroke-width="2"/>
+    <text x="545" y="788.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Logistikbasis der Armee</text>
+    <text x="545" y="808.0" text-anchor="middle" fill="#fff" font-size="12">Basis (Ebene 2)</text>
+    <rect x="440" y="870.0" width="210" height="65" rx="10" fill="#5b9bd5" stroke="#333" stroke-width="2"/>
+    <text x="545" y="898.0" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Luftwaffe</text>
+    <text x="545" y="918.0" text-anchor="middle" fill="#fff" font-size="12">Teilstreitkraft (Ebene 3)</text>
+</svg>
